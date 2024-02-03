@@ -2,10 +2,8 @@ import { useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import Skeleton from '../skeleton/Skeleton';
 import { Link } from 'react-router-dom';
-import './movieInfo.scss';
 
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
+import './movieInfo.scss';
 
 const MovieInfo = (props) => {
     
@@ -22,7 +20,6 @@ const MovieInfo = (props) => {
         if(!movieId) return;
         setMovie(movies.filter(movie => props.movieId === movie.id)[0])
     }
-    if(!movies.length) return null
     
     return (
         <div className="movie__info">
@@ -46,10 +43,6 @@ const View = ({data, star}) => {
                     <div className="movie__descr">Year: {year}</div>
                 </div>
                 <div className="movie__btns">
-                    {/* eslint-disable-next-line */}
-                    {/* <a href={'#'} className="button button__main" target="_blank">
-                        <div className="inner">Movie page</div>
-                    </a> */}
                     <Link to={`/movie/${id}`} className="button button__main">
                         <div className="inner">Movie page</div>
                     </Link>

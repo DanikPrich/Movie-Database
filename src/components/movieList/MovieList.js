@@ -4,6 +4,7 @@ import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { fetchMovies } from '../../store/moviesSlice';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import MovieSkeleton from '../movieSkeleton/MovieSkeleton';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -48,8 +49,8 @@ const MovieList = (props) => {
         exited: { opacity: 0, visibility: 'hidden' },
     }
 
-    const renderItems = (movieList) => {
-        const items = movieList.map((item,i) => {
+    const renderItems = (list) => {
+        const items = list.map((item,i) => {
             const star = favouritesMoviesIds.includes(item.id) ? <StarIcon sx={{ color: '#F5C518', fontSize: '30px' }}/> : <StarBorderIcon sx={{ color: '#F5C518', fontSize: '30px' }}/>
             const imgStyle = {'objectFit' : 'cover'}
 
@@ -86,6 +87,17 @@ const MovieList = (props) => {
                 </Transition>
             )
         })
+
+        if (items.length === 0) {
+            return (
+                <ul className="movie__grid">
+                    {Array.from({ length: 6 }).map((item, i) => (
+                        <MovieSkeleton key={i} />
+                    ))}
+                </ul>
+            )
+        }
+
         return (
             <ul className="movie__grid">
                 <TransitionGroup component={null}>
@@ -97,15 +109,9 @@ const MovieList = (props) => {
 
     const items = renderItems(moviesList)
 
-    if (moviesLoadingStatus === "error") {
-        return (
-            <ErrorMessage/>
-        )
-    }
-
     return (
         <div className="movie__list">
-            {items}
+            {moviesLoadingStatus === "error" ? <ErrorMessage/> : items}
             <button 
             className="button button__main button__long"
             disabled={moviesLoadingStatus === "loading" || moviesList.length === moviesTotal}

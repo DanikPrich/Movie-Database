@@ -3,7 +3,6 @@ import { Helmet } from "react-helmet";
 import MovieList from "../movieList/MovieList";
 import MovieInfo from "../movieInfo/MovieInfo";
 import MovieSearchForm from "../movieSearchForm/movieSearchForm";
-import decoration from '../../resources/img/vision.png';
 
 const MainPage = () => {
 
@@ -32,7 +31,6 @@ const MainPage = () => {
                 <MovieInfo movieId={selectedMovie} star={starComponent}/>
             </div>
         </div>
-        <img className="bg-decoration" src={decoration} alt="vision"/>
       </>
     )
 }

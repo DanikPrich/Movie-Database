@@ -8,7 +8,7 @@ const initialState = {
   movieLoadingStatus: 'idle',
   favouritesLoadingStatus: 'idle',
   activeQueryValue: '',
-  favouritesIds: [],
+  favouritesIds: JSON.parse(localStorage.getItem('favourites')) || [],
   favouritesList: [],
   total: null,
   page: 0,
@@ -53,9 +53,11 @@ const moviesSlice  = createSlice({
   reducers: { 
     makeMovieFavourite: (state, action) => {
       state.favouritesIds.push(action.payload)
+      localStorage.setItem('favourites', JSON.stringify(state.favouritesIds));
     },
     removeFromFavourites: (state, action) => {
       state.favouritesIds = state.favouritesIds.filter(id => id !== action.payload)
+      localStorage.setItem('favourites', JSON.stringify(state.favouritesIds));
     }
   },
   extraReducers: (builder) => {

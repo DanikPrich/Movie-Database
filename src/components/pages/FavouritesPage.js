@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Spinner from '../spinner/Spinner';
 import { fetchFavourites } from '../../store/moviesSlice';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './favouritesPage.scss';
 
@@ -29,7 +30,7 @@ const FavouritesPage = () => {
                 <Link to={`/movie/${item.id}`} key={item.id}>
                     <li className="favourite__item">
                         <img src={item.poster} alt={item.title} style={imgStyle}/>
-                        <div className="movie__name">{item.title}</div>
+                        <div className="favourite__name">{item.title}</div>
                     </li>
                 </Link>
             )
@@ -43,7 +44,7 @@ const FavouritesPage = () => {
 
     const items = renderItems(favouritesList)
 
-    if (!favouritesList.length) {
+    if (!favouritesIds.length) {
         return (
             <div className="favourite__empty">
                 <h1>Please add movie to favourites</h1>
@@ -51,9 +52,15 @@ const FavouritesPage = () => {
         )
     }
 
+    if(favouritesLoadingStatus === 'loading') {
+        return <Spinner/>
+      } else if(favouritesLoadingStatus === 'error'){
+        return <ErrorMessage/>
+      }
+
     return (
         <div className="favourite__list">
-            {favouritesLoadingStatus === 'loading' ? <Spinner/> : items }
+            {items}
         </div>
     )
 
