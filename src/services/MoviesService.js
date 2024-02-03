@@ -8,12 +8,17 @@ const useMovieService = () => {
   const proxy = 'http://cors-anywhere.herokuapp.com/'
 
   const getMoviesByTitle = async ({title, page = 1}) => {
-    const data = await request(`${proxy}${_apiBase}?${_apiKey}&s=${title}&page=${page}`);
+    const data = await request(`${proxy}${_apiBase}?${_apiKey}&s=${title}&page=${page}`, 'GET');
     return {
       data: data.Search.map(_transformMovie), 
       total: data.totalResults,
       page
     };
+  }
+
+  const getMovieById = async (id) => {
+    const data = await request(`${proxy}${_apiBase}?${_apiKey}&i=${id}`, 'GET');
+    return _transformMovie(data);
   }
 
   const _transformMovie = (movie) => {
@@ -22,12 +27,20 @@ const useMovieService = () => {
       year: movie.Year,
       type: movie.Type,
       title: movie.Title,
-      poster: movie.Poster
+      poster: movie.Poster,
+      plot: movie?.Plot,
+      writer: movie?.Writer,
+      imdbRating: movie?.imdbRating,
+      imdbVotes: movie?.imdbVotes,
+      genre: movie?.Genre,
+      country: movie?.Country,
+      actors: movie?.Actors,
     }
   }
 
   return {
     getMoviesByTitle,
+    getMovieById
   }
 }
 

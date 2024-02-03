@@ -3,10 +3,13 @@ import useMovieService from '../services/MoviesService';
 
 const initialState = {
   movies: [],
+  movie: {},
   moviesLoadingStatus: 'idle',
+  movieLoadingStatus: 'idle',
   total: null,
   page: 0,
-  activeQueryValue: ''
+  activeQueryValue: '',
+  favourites: []
 }
 
 export const fetchMovies = createAsyncThunk(
@@ -21,6 +24,15 @@ export const fetchMovies = createAsyncThunk(
       title: query.title,
       page,
     }
+  }
+)
+
+export const fetchMovie = createAsyncThunk(
+  'movies/fetchMovie', 
+  async (id, thunkApi) => { 
+    const { getMovieById } = useMovieService();
+    const data = await getMovieById(id);
+    return { data };
   }
 )
 
@@ -51,6 +63,12 @@ const moviesSlice  = createSlice({
     moviesFetchingError: (state, action) => { 
       state.moviesLoadingStatus = 'error' 
     },
+    makeMovieFavourite: (state, action) => {
+      state.favourites.push(action.payload)
+    },
+    removeFromFavourites: (state, action) => {
+      state.favourites = state.favourites.filter(id => id !== action.payload)
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.pending, state => {state.moviesLoadingStatus = 'loading'}) 
@@ -63,6 +81,13 @@ const moviesSlice  = createSlice({
       state.page = action.payload.page
     })
     builder.addCase(fetchMovies.rejected, state => {state.moviesLoadingStatus = 'error'})
+
+    builder.addCase(fetchMovie.pending, state => {state.movieLoadingStatus = 'loading'}) 
+    builder.addCase(fetchMovie.fulfilled, (state, action) => { 
+      state.movieLoadingStatus = 'idle'
+      state.movie = action.payload.data
+    })
+    builder.addCase(fetchMovie.rejected, state => {state.movieLoadingStatus = 'error'})
     builder.addDefaultCase(() => {})
   }
 });
@@ -74,4 +99,6 @@ export const {
   moviesFetching,
   moviesFetched,
   moviesFetchingError,
+  makeMovieFavourite,
+  removeFromFavourites
 } = actions

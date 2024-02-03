@@ -23,19 +23,43 @@
             flex-direction: column;
             justify-content: space-between;
         }
+        &-img {
+            position: relative;
+            svg {
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
+                z-index: 3;
+            }
+            img {
+                width: 150px;
+                height: auto;
+                object-fit: cover;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+        }
+        &-img::before {
+            content: ""; /* Создаем псевдоэлемент */
+            // z-index: 20;
+            position: absolute;
+            bottom: 0; /* Расположение снизу */
+            left: 0;
+            width: 100%; /* Ширина градиента равна ширине изображения */
+            height: 100px; /* Высота градиента (20 пикселей) */
+            background: linear-gradient(to top, #232222, transparent);
+            border-radius: 8px;
+        }
     }
     &__basics {
         display: grid;
         grid-template-columns: 150px auto;
         column-gap: 25px;
-        img {
-            width: 150px;
-            height: auto;
-            object-fit: cover;
-            border-radius: 8px;
-        }
     }
     &__btns {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 35px;
         a:nth-child(2) {
             margin-top: 10px;

@@ -8,9 +8,12 @@ import decoration from '../../resources/img/vision.png';
 const MainPage = () => {
 
     const [selectedMovie, setMovie] = useState(null);
+    const [starComponent, setStarComponent] = useState(null);
 
-    const onMovieSelected = (id) => {
+    const onMovieSelected = ({id, starComponent}) => {
         setMovie(id);
+        setStarComponent(starComponent);
+        console.log(starComponent)
     }
 
     return (
@@ -20,13 +23,13 @@ const MainPage = () => {
                 name="description"
                 content="MovieDB information portal"
             />
-            <title>MovieDB information portal</title>
+            <title>Movie Database portal</title>
         </Helmet>
         <MovieSearchForm />
         <div className="movie__content">
             <MovieList onMovieSelected={onMovieSelected}/>
             <div style={{position: 'sticky', top: 25}}>
-                <MovieInfo movieId={selectedMovie}/>
+                <MovieInfo movieId={selectedMovie} star={starComponent}/>
             </div>
         </div>
         <img className="bg-decoration" src={decoration} alt="vision"/>

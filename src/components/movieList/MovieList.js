@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchMovies } from '../../store/moviesSlice';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
+
 import './movieList.scss';
 
 const MovieList = (props) => {
@@ -11,6 +14,7 @@ const MovieList = (props) => {
     const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
     const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
     const page = useSelector(state => state.movies.page);
+    const favouritesMoviesIds = useSelector(state => state.movies.favourites)
 
     const dispatch = useDispatch();
     
@@ -44,7 +48,7 @@ const MovieList = (props) => {
 
     const renderItems = (movieList) => {
         const items = movieList.map((item,i) => {
-
+            const star = favouritesMoviesIds.includes(item.id) ? <StarIcon sx={{ color: '#F5C518', fontSize: '30px' }}/> : <StarBorderIcon sx={{ color: '#F5C518', fontSize: '30px' }}/>
             const imgStyle = {'objectFit' : 'cover'}
 
             return (
@@ -61,7 +65,7 @@ const MovieList = (props) => {
                             }}
                             ref={el => movieRefs.current[i] = el}
                             onClick={() => {
-                                props.onMovieSelected(item.id);
+                                props.onMovieSelected({id: item.id, starComponent: star});
                                 focusOnItem(i)
                             }}
                             onKeyDown={(e) => {
@@ -72,6 +76,7 @@ const MovieList = (props) => {
                             }}
                             tabIndex={0}
                             >
+                                {star}
                                 <img src={item.poster} alt={item.title} style={imgStyle}/>
                                 <div className="movie__name">{item.title}</div>
                             </li>

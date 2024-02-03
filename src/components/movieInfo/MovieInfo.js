@@ -1,8 +1,11 @@
 import { useState, useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import Skeleton from '../skeleton/Skeleton';
-
+import { Link } from 'react-router-dom';
 import './movieInfo.scss';
+
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 
 const MovieInfo = (props) => {
     
@@ -23,18 +26,20 @@ const MovieInfo = (props) => {
     
     return (
         <div className="movie__info">
-            {movie ? <View data={movie}/> : <Skeleton/>}
+            {movie ? <View data={movie} star={props.star}/> : <Skeleton/>}
         </div>
     )
 }
 
-const View = ({data}) => {
+const View = ({data, star}) => {
     
-    const {title, year, poster} = data
-
+    const {title, year, poster, id} = data
     return (
         <div className="movie__basics">
-            <img src={poster} alt={title}  className='movie__info-img'/>
+            <div className='movie__info-img'>
+                <img src={poster} alt={title}  />
+                {star}
+            </div>
             <div className="movie__info-wrapper">
                 <div>
                     <div className="movie__info-name">{title}</div>
@@ -42,9 +47,12 @@ const View = ({data}) => {
                 </div>
                 <div className="movie__btns">
                     {/* eslint-disable-next-line */}
-                    <a href={'#'} className="button button__main" target="_blank">
+                    {/* <a href={'#'} className="button button__main" target="_blank">
                         <div className="inner">Movie page</div>
-                    </a>
+                    </a> */}
+                    <Link to={`/movie/${id}`} className="button button__main">
+                        <div className="inner">Movie page</div>
+                    </Link>
                 </div>
             </div>
         </div>
