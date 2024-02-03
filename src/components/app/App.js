@@ -4,8 +4,8 @@ import Spinner from '../spinner/Spinner';
 import AppHeader from "../appHeader/AppHeader";
 
 const MainPage = lazy(() => import('../pages/MainPage'));
+const FavouritesPage = lazy(() => import('../pages/FavouritesPage'));
 const SingleMoviePage = lazy(() => import('../pages/SingleMoviePage'));
-
 
 const App = () => {
 
@@ -19,6 +19,7 @@ const App = () => {
                         <Routes>
                             <Route path="/" element={<MainPage/>}/>
                             <Route path="/movie/:id" element={<SingleMoviePage/>}/>
+                            <Route path="/favourites/" element={<FavouritesPage/>}/>
                         </Routes>
                     </Suspense>
                </main>

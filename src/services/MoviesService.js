@@ -4,7 +4,8 @@ const useMovieService = () => {
   const { request } = useHttp();
 
   const _apiBase = 'http://omdbapi.com/';
-  const _apiKey = 'apikey=655cdc5c';
+  // const _apiKey = 'apikey=655cdc5c';
+  const _apiKey = 'apikey=9dcbec5b';
   const proxy = 'http://cors-anywhere.herokuapp.com/'
 
   const getMoviesByTitle = async ({title, page = 1}) => {
@@ -18,8 +19,23 @@ const useMovieService = () => {
 
   const getMovieById = async (id) => {
     const data = await request(`${proxy}${_apiBase}?${_apiKey}&i=${id}`, 'GET');
-    return _transformMovie(data);
+    if(data?.Error) return Promise.reject(data.Error);
+    else return _transformMovie(data);
   }
+
+  const getFavouritesByIds = async (ids) => {
+    try {
+      const requests = ids.map(async (id) => {
+        const movie = await request(`${proxy}${_apiBase}?${_apiKey}&i=${id}`, 'GET');
+        return _transformMovie(movie);
+      });
+  
+      const data = await Promise.all(requests);
+      return { data };
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const _transformMovie = (movie) => {
     return {
@@ -40,7 +56,8 @@ const useMovieService = () => {
 
   return {
     getMoviesByTitle,
-    getMovieById
+    getMovieById,
+    getFavouritesByIds
   }
 }
 

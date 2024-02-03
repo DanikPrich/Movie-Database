@@ -1,21 +1,23 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import AppBanner from "../appBanner/AppBanner";
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { fetchMovie, makeMovieFavourite, removeFromFavourites } from '../../store/moviesSlice';
-import './singleMoviePage.scss';
 import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+
+import './singleMoviePage.scss';
 
 const SingleMovieLayout = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const movie = useSelector(state => state.movies.movie)
-  const favouritesMoviesIds = useSelector(state => state.movies.favourites)
+  const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
   const movieLoadingStatus = useSelector(state => state.movies.movieLoadingStatus)
 
   const [isFavourite, setIsFavourite] = useState(false)
@@ -38,18 +40,20 @@ const SingleMovieLayout = () => {
     }
   }
 
-  return (
-    <>
-      {movieLoadingStatus === 'loading' ? <Spinner/> : <View data={movie} onStar={onStar} isFavourite={isFavourite}/> }
-    </>
-  )
+  if(movieLoadingStatus === 'loading') {
+    return <Spinner/>
+  } else if(movieLoadingStatus === 'error'){
+    return <ErrorMessage/>
+  }
+
+  return <View data={movie} onStar={onStar} isFavourite={isFavourite}/> 
 }
 
 const View = ({data, onStar, isFavourite}) => {
   const {title, poster, year, actors, country, genre, imdbRating, imdbVotes, plot, writer} = data;
   return (
     <>
-      <Link to="/" className="single-movie__back">{'< Back to all'}</Link>
+      <Link to="/" className="single-movie__back">&#60; Back to all</Link>
 
       <div className="single-movie">
         <Helmet>
@@ -63,12 +67,12 @@ const View = ({data, onStar, isFavourite}) => {
         <div className="single-movie__info">
           <h1 className="single-movie__name">{title}</h1>
           <p className="single-movie__descr">{plot}</p>
-          <p className="single-movie__descr">IMDb RATING: {imdbRating}/10 ({imdbVotes})</p>
-          <p className="single-movie__descr">Year: {year}</p>
-          <p className="single-movie__descr">Actors: {actors}</p>
-          <p className="single-movie__descr">Country: {country}</p>
-          <p className="single-movie__descr">Genre: {genre}</p>
-          <p className="single-movie__descr">Writer: {writer}</p>
+          <p className="single-movie__descr"><strong>IMDb RATING:</strong> {imdbRating}/10 ({imdbVotes})</p>
+          <p className="single-movie__descr"><strong>Year:</strong> {year}</p>
+          <p className="single-movie__descr"><strong>Actors:</strong> {actors}</p>
+          <p className="single-movie__descr"><strong>Country:</strong> {country}</p>
+          <p className="single-movie__descr"><strong>Genre:</strong> {genre}</p>
+          <p className="single-movie__descr"><strong>Writer:</strong> {writer}</p>
         </div>
         <div className='single-movie__actions'>
           <button className='single-movie__actions-star' onClick={onStar}>

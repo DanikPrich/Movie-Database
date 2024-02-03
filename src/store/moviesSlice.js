@@ -6,10 +6,12 @@ const initialState = {
   movie: {},
   moviesLoadingStatus: 'idle',
   movieLoadingStatus: 'idle',
+  favouritesLoadingStatus: 'idle',
+  activeQueryValue: '',
+  favouritesIds: [],
+  favouritesList: [],
   total: null,
   page: 0,
-  activeQueryValue: '',
-  favourites: []
 }
 
 export const fetchMovies = createAsyncThunk(
@@ -36,38 +38,24 @@ export const fetchMovie = createAsyncThunk(
   }
 )
 
+export const fetchFavourites = createAsyncThunk(
+  'movies/fetchFavourites', 
+  async (favouritesIds, thunkApi) => { 
+    const { getFavouritesByIds } = useMovieService();
+    const { data } = await getFavouritesByIds(favouritesIds);
+    return { data };
+  }
+)
+
 const moviesSlice  = createSlice({
   name: 'movies',
   initialState,
   reducers: { 
-    moviesFetching: state => {
-      state.moviesLoadingStatus = 'loading'
-    },
-    moviesFetchingPayload: {
-      reducer: (state, action) => state.movies.push(action.payload), 
-      prepare: (data) => { 
-        const transfomeredMovies = data.Search.map((movie) => ({
-          id: movie.imdbID,
-          year: movie.Year,
-          type: movie.Type,
-          title: movie.Title,
-          poster: movie.Poster
-        }))
-        return { payload: transfomeredMovies}
-      },
-    },
-    moviesFetched: (state, action) => { 
-      state.moviesLoadingStatus = 'idle'
-      state.movies = action.payload; 
-    },
-    moviesFetchingError: (state, action) => { 
-      state.moviesLoadingStatus = 'error' 
-    },
     makeMovieFavourite: (state, action) => {
-      state.favourites.push(action.payload)
+      state.favouritesIds.push(action.payload)
     },
     removeFromFavourites: (state, action) => {
-      state.favourites = state.favourites.filter(id => id !== action.payload)
+      state.favouritesIds = state.favouritesIds.filter(id => id !== action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -88,6 +76,13 @@ const moviesSlice  = createSlice({
       state.movie = action.payload.data
     })
     builder.addCase(fetchMovie.rejected, state => {state.movieLoadingStatus = 'error'})
+
+    builder.addCase(fetchFavourites.pending, state => {state.favouritesLoadingStatus = 'loading'}) 
+    builder.addCase(fetchFavourites.fulfilled, (state, action) => { 
+      state.favouritesLoadingStatus = 'idle'
+      state.favouritesList = action.payload.data  
+    })
+    builder.addCase(fetchFavourites.rejected, state => {state.favouritesLoadingStatus = 'error'})
     builder.addDefaultCase(() => {})
   }
 });
@@ -96,9 +91,6 @@ const { actions, reducer } = moviesSlice
 
 export default reducer 
 export const {
-  moviesFetching,
-  moviesFetched,
-  moviesFetchingError,
   makeMovieFavourite,
   removeFromFavourites
 } = actions

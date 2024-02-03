@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMovies } from '../../store/moviesSlice';
 import { Transition, TransitionGroup } from 'react-transition-group';
+
+import { fetchMovies } from '../../store/moviesSlice';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -14,7 +16,7 @@ const MovieList = (props) => {
     const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
     const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
     const page = useSelector(state => state.movies.page);
-    const favouritesMoviesIds = useSelector(state => state.movies.favourites)
+    const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
 
     const dispatch = useDispatch();
     
@@ -96,11 +98,10 @@ const MovieList = (props) => {
     const items = renderItems(moviesList)
 
     if (moviesLoadingStatus === "error") {
-    return (
-        <div className="movie__empty">
-            <h1 className="text-center mt-5">Cant find any movie</h1>
-        </div>
-    )}
+        return (
+            <ErrorMessage/>
+        )
+    }
 
     return (
         <div className="movie__list">
