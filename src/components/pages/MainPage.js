@@ -23,7 +23,7 @@ const MainPage = () => {
                 name="description"
                 content="MovieDB information portal"
             />
-            <title>Movie Database portal</title>
+            <title>Movie Database</title>
         </Helmet>
         <MovieSearchForm />
         <div className="movie__content">
