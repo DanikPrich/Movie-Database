@@ -1,12 +1,12 @@
-import { lazy, Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Spinner from '../spinner/Spinner';
-import AppHeader from "../appHeader/AppHeader";
+import Spinner from '../spinner/Spinner.tsx';
+import AppHeader from "../appHeader/AppHeader.tsx";
 
-const Page404 = lazy(() => import('../pages/404'));
-const MainPage = lazy(() => import('../pages/MainPage'));
-const FavouritesPage = lazy(() => import('../pages/FavouritesPage'));
-const SingleMoviePage = lazy(() => import('../pages/SingleMoviePage'));
+const Page404 = lazy(() => import('../pages/404.tsx'));
+const MainPage = lazy(() => import('../pages/MainPage.tsx'));
+const FavouritesPage = lazy(() => import('../pages/FavouritesPage.tsx'));
+const SingleMoviePage = lazy(() => import('../pages/SingleMoviePage.tsx'));
 
 const App = () => {
 

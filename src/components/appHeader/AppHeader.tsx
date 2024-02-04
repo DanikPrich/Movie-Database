@@ -1,7 +1,9 @@
+import React from 'react';
 import {Link, NavLink} from 'react-router-dom'
 import './appHeader.scss';
 
 const AppHeader = () => {
+    const headerStyle = (isActive: boolean) => ({color: isActive ? '#9F0013' : 'inherit'})
     return (
         <header className="app__header">
             <h1 className="app__title">
@@ -14,7 +16,7 @@ const AppHeader = () => {
                     <li>
                         <NavLink 
                             end 
-                            style={({isActive}) => ({color: isActive ? '#9F0013' : 'inherit'})}
+                            style={({isActive}) => headerStyle(isActive)}
                             to="/">
                                 Movies
                         </NavLink>
@@ -22,7 +24,7 @@ const AppHeader = () => {
                     /
                     <li>
                         <NavLink 
-                            style={({isActive}) => ({color: isActive ? '#9F0013' : 'inherit'})}
+                            style={({isActive}) => headerStyle(isActive)}
                             to="/favourites">
                                 Favourites
                         </NavLink>

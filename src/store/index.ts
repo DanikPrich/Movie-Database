@@ -1,5 +1,5 @@
-import movie from './movieSlice';
-import favourite from './favouriteSlice';
+import movie from './movieSlice.ts';
+import favourite from './favouriteSlice.ts';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store  = configureStore({
@@ -7,4 +7,6 @@ const store  = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== 'production', 
 })
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
 export default store;

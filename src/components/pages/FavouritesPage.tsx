@@ -1,19 +1,20 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import Spinner from '../spinner/Spinner';
-import { fetchFavourites } from '../../store/favouriteSlice';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import { AppDispatch, RootState } from '../../store/index.tsx';
+import Spinner from '../spinner/Spinner.tsx';
+import { fetchFavourites } from '../../store/favouriteSlice.ts';
+import ErrorMessage from '../errorMessage/ErrorMessage.tsx';
 
 import './favouritesPage.scss';
+import { IMovie, IMovieList } from '../../types/movie.ts';
 
 const FavouritesPage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     
-    const favouriteList = useSelector(state => state.favourite.favouriteList)
-    const favouriteLoadingStatus = useSelector(state => state.favourite.favouriteLoadingStatus)
-    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
+    const favouriteList = useSelector((state: RootState) => state.favourite.favouriteList)
+    const favouriteLoadingStatus = useSelector((state: RootState) => state.favourite.favouriteLoadingStatus)
+    const favouriteIds = useSelector((state: RootState) => state.favourite.favouriteIds)
 
 
     useEffect(() => {
@@ -22,13 +23,13 @@ const FavouritesPage = () => {
     }, [favouriteIds])
 
 
-    const renderItems = (movieList) => {
-        const items = movieList.map((item) => {
+    const renderItems = (movieList: IMovieList) => {
+        const items = movieList.map(({id, title, poster}: IMovie) => {
             return (
-                <Link to={`/movie/${item.id}`} key={item.id}>
+                <Link to={`/movie/${id}`} key={id}>
                     <li className="favourite__item">
-                        <img src={item.poster} alt={item.title}/>
-                        <div className="favourite__name">{item.title}</div>
+                        <img src={poster} alt={title}/>
+                        <div className="favourite__name">{title}</div>
                     </li>
                 </Link>
             )

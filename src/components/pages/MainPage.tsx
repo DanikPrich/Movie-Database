@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { RootState } from '../../store/index.ts';
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import MovieList from "../movieList/MovieList";
-import MovieInfo from "../movieInfo/MovieInfo";
-import MovieSearchForm from "../movieSearchForm/movieSearchForm";
+import MovieList from "../movieList/MovieList.tsx";
+import MovieInfo from "../movieInfo/MovieInfo.tsx";
+import MovieSearchForm from "../movieSearchForm/movieSearchForm.tsx";
 import { useSelector } from 'react-redux';
+import { IMovie } from '../../types/movie.ts';
 
 const MainPage = () => {
-    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
+    const favouriteIds = useSelector((state: RootState) => state.favourite.favouriteIds)
 
-    const [selectedMovie, setMovie] = useState(null);
-    const [isFavourite, setIsFavourite] = useState(false);
+    const [selectedMovie, setMovie] = useState<IMovie | null>(null);
+    const [isFavourite, setIsFavourite] = useState<boolean>(false);
 
-    const onMovieSelected = (movie) => {
+    const onMovieSelected = (movie: IMovie | null) => {
         setMovie(movie);
         if(movie) setIsFavourite(favouriteIds.includes(movie.id))
     }

@@ -1,34 +1,41 @@
+import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transition, TransitionGroup } from 'react-transition-group';
-
-import { fetchMovieList, setActiveCard } from '../../store/movieSlice';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import MovieSkeleton from '../movieSkeleton/MovieSkeleton';
+import { fetchMovieList, setActiveCard } from '../../store/movieSlice.ts';
+import { AppDispatch, RootState } from '../../store/index.ts';
+import ErrorMessage from '../errorMessage/ErrorMessage.tsx';
+import MovieSkeleton from '../movieSkeleton/MovieSkeleton.tsx';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
 import './movieList.scss';
+import { IMovie, IMovieList } from '../../types/movie.ts';
+import { IQueryMovieList } from '../../services/MoviesService.ts';
 
-const MovieList = (props) => {
-    const movieList = useSelector(state => state.movie.movieList)
-    const movieTotal = useSelector(state => state.movie.total)
-    const movieListLoadingStatus = useSelector(state => state.movie.movieListLoadingStatus);
-    const activeSearchValue = useSelector(state => state.movie.activeSearchValue);
-    const page = useSelector(state => state.movie.page);
-    const activeMovieCard = useSelector(state => state.movie.activeMovieCard)
-    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
+interface IMovieListProps {
+    onMovieSelected: (value: IMovie | null) => void;
+}
 
-    const dispatch = useDispatch();
+const MovieList = ({onMovieSelected}: IMovieListProps) => {
+    const movieList = useSelector((state: RootState) => state.movie.movieList)
+    const movieTotal = useSelector((state: RootState) => state.movie.total)
+    const movieListLoadingStatus = useSelector((state: RootState) => state.movie.movieListLoadingStatus);
+    const activeSearchValue = useSelector((state: RootState) => state.movie.activeSearchValue);
+    const page = useSelector((state: RootState) => state.movie.page);
+    const activeMovieCard = useSelector((state: RootState) => state.movie.activeMovieCard)
+    const favouriteIds = useSelector((state: RootState) => state.favourite.favouriteIds)
+
+    const dispatch = useDispatch<AppDispatch>();
     
     useEffect(() => {
-        props.onMovieSelected(activeMovieCard);
+        onMovieSelected(activeMovieCard);
         //eslint-disable-next-line
     }, []) 
 
     const onRequest = () => {
-        const query = {
+        const query: IQueryMovieList = {
             title: activeSearchValue,
             page: page + 1,
         }
@@ -36,9 +43,9 @@ const MovieList = (props) => {
     }
     
 
-    const selectMovie = (movie) => {
+    const selectMovie = (movie: IMovie) => {
         dispatch(setActiveCard(movie))
-        props.onMovieSelected(movie);
+        onMovieSelected(movie);
     }
 
     const duration = 200;
@@ -54,8 +61,8 @@ const MovieList = (props) => {
         exited: { opacity: 0, visibility: 'hidden' },
     }
 
-    const renderItems = (list) => {
-        const items = list.map((item,i) => {
+    const renderItems = (list: IMovieList) => {
+        const items = list.map(item => {
             const starOptions = { color: '#F5C518', fontSize: '30px' };
             const isFavourite = favouriteIds.includes(item.id) 
 
@@ -109,7 +116,7 @@ const MovieList = (props) => {
         )
     }
 
-    const renderButton = (loadingStatus, movieList, movieTotal) => {
+    const renderButton = (loadingStatus: string, movieList: IMovieList, movieTotal: number) => {
         const isDisabled = loadingStatus === "loading"
         const style = {'display' : movieList.length === movieTotal ? 'none' : 'block'}
 

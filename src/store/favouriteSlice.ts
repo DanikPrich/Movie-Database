@@ -1,15 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import useMovieService from '../services/MoviesService';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import useMovieService from '../services/MoviesService.ts';
+import { IMovieList } from "../types/movie";
 
-const initialState = {
+interface IFavouriteState {
+  favouriteList: IMovieList,
+  favouriteLoadingStatus: string,
+  favouriteIds: Array<string>,
+}
+
+const initialState: IFavouriteState = {
   favouriteList: [],
   favouriteLoadingStatus: 'idle',
-  favouriteIds: JSON.parse(localStorage.getItem('favourites')) || [],
+  favouriteIds: JSON.parse(localStorage.getItem('favourites') as string) || [],
 }
 
 export const fetchFavourites = createAsyncThunk(
   'favourite/fetchFavourites', 
-  async (favouriteIds, thunkApi) => { 
+  async (favouriteIds: Array<string>, thunkApi) => { 
     const { getFavouritesByIds } = useMovieService();
     const { data } = await getFavouritesByIds(favouriteIds);
     return { data };
@@ -20,11 +27,11 @@ const favouriteSlice  = createSlice({
   name: 'favourite',
   initialState,
   reducers: { 
-    makeFavourite: (state, action) => {
+    makeFavourite: (state, action: PayloadAction<string>) => {
       state.favouriteIds.push(action.payload)
       localStorage.setItem('favourites', JSON.stringify(state.favouriteIds));
     },
-    removeFavourite: (state, action) => {
+    removeFavourite: (state, action: PayloadAction<string>) => {
       state.favouriteIds = state.favouriteIds.filter(id => id !== action.payload)
       localStorage.setItem('favourites', JSON.stringify(state.favouriteIds));
     },

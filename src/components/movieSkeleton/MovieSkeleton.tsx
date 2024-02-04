@@ -1,3 +1,4 @@
+import React from 'react';
 import './movieSkeleton.scss';
 
 const MovieSkeleton = () => {

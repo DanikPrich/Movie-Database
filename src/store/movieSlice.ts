@@ -1,35 +1,48 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import useMovieService from '../services/MoviesService';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import useMovieService from '../services/MoviesService.ts';
+import { IMovie, IMovieList } from "../types/movie";
+import { IQueryMovieList } from '../services/MoviesService.ts'
 
-const initialState = {
+interface IMovieState {
+  movieList: IMovieList,
+  movie: IMovie | null,
+  movieListLoadingStatus: string,
+  movieLoadingStatus: string,
+  activeSearchValue: string,
+  activeMovieCard: IMovie | null,
+  total: number,
+  page: number,
+}
+
+const initialState: IMovieState = {
   movieList: [],
-  movie: {},
+  movie: null,
+  activeMovieCard: null,
+  activeSearchValue: '',
   movieListLoadingStatus: 'idle',
   movieLoadingStatus: 'idle',
-  activeSearchValue: '',
-  activeMovieCard: null,
   total: 0,
   page: 0,
 }
 
 export const fetchMovieList = createAsyncThunk(
-  'movie/fetchMovieList', 
-  async (query, thunkApi) => { 
+  'movie/fetchMovieList',
+  async (query: IQueryMovieList) => {
     const { getMoviesByTitle } = useMovieService();
-    const {data, total, page} = await getMoviesByTitle(query)
-    
+    const { data, total, page } = await getMoviesByTitle(query);
+
     return {
-      data, 
-      total, 
+      data,
+      total,
       title: query.title,
       page,
-    }
+    };
   }
-)
+);
 
 export const fetchMovie = createAsyncThunk(
   'movie/fetchMovie', 
-  async (id, thunkApi) => { 
+  async (id: string) => { 
     const { getMovieById } = useMovieService();
     const data = await getMovieById(id);
     return { data };
@@ -40,7 +53,7 @@ const movieSlice  = createSlice({
   name: 'movie',
   initialState,
   reducers: { 
-    setActiveCard: (state, action) => {
+    setActiveCard: (state, action: PayloadAction<IMovie | null>) => {
       state.activeMovieCard = action.payload
     },
   },

@@ -44,7 +44,7 @@
     }
     &__actions {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         transition: all .3s ease ;
         &-star {
             cursor: pointer;

@@ -1,17 +1,19 @@
+import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMovieList } from '../../store/movieSlice';
-
+import { AppDispatch, RootState } from '../../store/index.ts';
+import { fetchMovieList } from '../../store/movieSlice.ts';
+import { IQueryMovieList } from '../../services/MoviesService.ts';
 import './movieSearchForm.scss';
 
-const MovieSearchForm = (props) => {
-    const movieListLoadingStatus = useSelector(state => state.movie.movieListLoadingStatus);
-    const activeSearchValue = useSelector(state => state.movie.activeSearchValue);
+const MovieSearchForm = () => {
+    const movieListLoadingStatus = useSelector((state: RootState) => state.movie.movieListLoadingStatus);
+    const activeSearchValue = useSelector((state: RootState) => state.movie.activeSearchValue);
 
-    const dispatch = useDispatch();
-    const updateMovie = async (searchValue) => {
-        const query = {
+    const dispatch = useDispatch<AppDispatch>();
+    const updateMovie = async (searchValue: string) => {
+        const query: IQueryMovieList = {
             title: searchValue,
             page: 1,
         }
@@ -60,7 +62,7 @@ const MovieSearchForm = (props) => {
                         </button>
                         
                     </div>
-                    {errors.searchValue && touched.searchValue ? <div className='movie__search-error'>{errors.searchValue}</div> : null}
+                    { errors.searchValue && touched.searchValue ? <div className='movie__search-error'>{errors.searchValue}</div> : null }
                 </form>
             )}
            

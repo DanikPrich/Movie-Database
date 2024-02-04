@@ -1,20 +1,27 @@
-import Skeleton from '../skeleton/Skeleton';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import Skeleton from '../skeleton/Skeleton.tsx';
+import { IMovie } from '../../types/movie';
 import './movieInfo.scss';
 
-const MovieInfo = ({movie, star}) => {
+interface IMovieInfoProps {
+    movie: IMovie | null,
+    star: boolean
+}
+
+const MovieInfo = (props: IMovieInfoProps) => {
     return (
         <div className="movie__info">
-            { movie ? <View data={movie} star={star}/> : <Skeleton/> }
+            { props.movie ? <View {...props} /> : <Skeleton/> }
         </div>
     )
 }
 
-const View = ({data, star}) => {
-    const starOptions = { color: '#F5C518', fontSize: '30px' };
-    const {title, year, poster, id} = data
+const View = ({movie, star}) => {
+    const starOptions = { color: '#090907', fontSize: '30px' };
+    const {title, year, poster, id} = movie
 
     return (
         <div className="movie__basics">

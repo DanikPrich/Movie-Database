@@ -1,3 +1,4 @@
+import React from 'react';
 const Spinner = ({width = 100, height = 100}) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" style={{margin: '0 auto', background: 'none', display: 'block'}} width={width} height={height} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">

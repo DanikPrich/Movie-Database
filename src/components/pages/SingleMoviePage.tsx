@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/index.ts';
 
-import { fetchMovie } from '../../store/movieSlice';
-import { makeFavourite, removeFavourite } from '../../store/favouriteSlice';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import { fetchMovie } from '../../store/movieSlice.ts';
+import { makeFavourite, removeFavourite } from '../../store/favouriteSlice.ts';
+import Spinner from '../spinner/Spinner.tsx';
+import ErrorMessage from '../errorMessage/ErrorMessage.tsx';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -16,28 +17,30 @@ import './singleMoviePage.scss';
 
 const SingleMovieLayout = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const movie = useSelector(state => state.movie.movie)
-  const favouriteIds = useSelector(state => state.favourite.favouriteIds)
-  const movieLoadingStatus = useSelector(state => state.movie.movieLoadingStatus)
+
+  const movie = useSelector((state: RootState) => state.movie.movie)
+  const favouriteIds = useSelector((state: RootState) => state.favourite.favouriteIds)
+  const movieLoadingStatus = useSelector((state: RootState) => state.movie.movieLoadingStatus)
 
   const [isFavourite, setIsFavourite] = useState(false)
+  
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchMovie(id))
+    dispatch(fetchMovie(id ?? ""))
     //eslint-disable-next-line
   }, [id])
 
   useEffect(() => {
-    setIsFavourite(favouriteIds.includes(id))
+    setIsFavourite(favouriteIds.includes(id ?? ""))
     //eslint-disable-next-line
   }, [favouriteIds])
 
   const onStar = () => {
     if(!isFavourite) {
-      dispatch(makeFavourite(id))
+      dispatch(makeFavourite(id ?? ""))
     } else {
-      dispatch(removeFavourite(id))
+      dispatch(removeFavourite(id ?? ""))
     }
   }
 
@@ -47,7 +50,7 @@ const SingleMovieLayout = () => {
     return <ErrorMessage/>
   }
 
-  return <View data={movie} onStar={onStar} isFavourite={isFavourite}/> 
+  return movie ? <View data={movie} onStar={onStar} isFavourite={isFavourite} /> : null
 }
 
 const View = ({data, onStar, isFavourite}) => {
