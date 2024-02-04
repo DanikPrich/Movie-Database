@@ -7,7 +7,7 @@ import './movieInfo.scss';
 const MovieInfo = ({movie, star}) => {
     return (
         <div className="movie__info">
-            {movie ? <View data={movie} star={star}/> : <Skeleton/>}
+            { movie ? <View data={movie} star={star}/> : <Skeleton/> }
         </div>
     )
 }

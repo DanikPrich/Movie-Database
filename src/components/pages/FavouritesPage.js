@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Spinner from '../spinner/Spinner';
-import { fetchFavourites } from '../../store/moviesSlice';
+import { fetchFavourites } from '../../store/favouriteSlice';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './favouritesPage.scss';
@@ -11,15 +11,15 @@ import './favouritesPage.scss';
 const FavouritesPage = () => {
     const dispatch = useDispatch();
     
-    const favouritesList = useSelector(state => state.movies.favouritesList)
-    const favouritesLoadingStatus = useSelector(state => state.movies.favouritesLoadingStatus)
-    const favouritesIds = useSelector(state => state.movies.favouritesIds)
+    const favouriteList = useSelector(state => state.favourite.favouriteList)
+    const favouriteLoadingStatus = useSelector(state => state.favourite.favouriteLoadingStatus)
+    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
 
 
     useEffect(() => {
-        if(favouritesIds) dispatch(fetchFavourites(favouritesIds))
+        if(favouriteIds) dispatch(fetchFavourites(favouriteIds))
         //eslint-disable-next-line
-    }, [favouritesIds])
+    }, [favouriteIds])
 
 
     const renderItems = (movieList) => {
@@ -40,9 +40,9 @@ const FavouritesPage = () => {
         )
     }
 
-    const items = renderItems(favouritesList)
+    const items = renderItems(favouriteList)
 
-    if (!favouritesIds.length) {
+    if (!favouriteIds.length) {
         return (
             <div className="favourite__empty">
                 <h1>Please add movie to favourites</h1>
@@ -50,9 +50,9 @@ const FavouritesPage = () => {
         )
     }
 
-    if(favouritesLoadingStatus === 'loading') {
+    if(favouriteLoadingStatus === 'loading') {
         return <Spinner/>
-      } else if(favouritesLoadingStatus === 'error'){
+      } else if(favouriteLoadingStatus === 'error'){
         return <ErrorMessage/>
       }
 

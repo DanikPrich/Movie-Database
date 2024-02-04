@@ -1,8 +1,9 @@
-import movies from './moviesSlice';
+import movie from './movieSlice';
+import favourite from './favouriteSlice';
 import { configureStore } from '@reduxjs/toolkit';
 
 const store  = configureStore({
-  reducer: {movies}, 
+  reducer: {movie, favourite}, 
   middleware: getDefaultMiddleware => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== 'production', 
 })

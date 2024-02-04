@@ -1,13 +1,13 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMovies } from '../../store/moviesSlice';
+import { fetchMovieList } from '../../store/movieSlice';
 
 import './movieSearchForm.scss';
 
 const MovieSearchForm = (props) => {
-    const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
-    const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
+    const movieListLoadingStatus = useSelector(state => state.movie.movieListLoadingStatus);
+    const activeSearchValue = useSelector(state => state.movie.activeSearchValue);
 
     const dispatch = useDispatch();
     const updateMovie = async (searchValue) => {
@@ -15,7 +15,7 @@ const MovieSearchForm = (props) => {
             title: searchValue,
             page: 1,
         }
-        dispatch(fetchMovies(query))
+        dispatch(fetchMovieList(query))
     }
 
     const validationSchema = Yup.object({
@@ -24,7 +24,7 @@ const MovieSearchForm = (props) => {
 
     return (
         <Formik 
-            initialValues={{searchValue: activeQueryValue}}
+            initialValues={{searchValue: activeSearchValue}}
             validationSchema={validationSchema}
             onSubmit={async ({searchValue}, {setSubmitting}) => {
                 await updateMovie(searchValue)
@@ -54,7 +54,7 @@ const MovieSearchForm = (props) => {
                         <button 
                             type='submit' 
                             className="button button__main"
-                            disabled={moviesLoadingStatus === 'loading'}
+                            disabled={movieListLoadingStatus === 'loading'}
                         >
                             <div className="inner">Find</div>
                         </button>

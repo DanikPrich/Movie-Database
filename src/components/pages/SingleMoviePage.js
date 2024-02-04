@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { fetchMovie, makeMovieFavourite, removeFromFavourites } from '../../store/moviesSlice';
+import { fetchMovie } from '../../store/movieSlice';
+import { makeFavourite, removeFavourite } from '../../store/favouriteSlice';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 
@@ -16,9 +17,9 @@ import './singleMoviePage.scss';
 const SingleMovieLayout = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const movie = useSelector(state => state.movies.movie)
-  const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
-  const movieLoadingStatus = useSelector(state => state.movies.movieLoadingStatus)
+  const movie = useSelector(state => state.movie.movie)
+  const favouriteIds = useSelector(state => state.favourite.favouriteIds)
+  const movieLoadingStatus = useSelector(state => state.movie.movieLoadingStatus)
 
   const [isFavourite, setIsFavourite] = useState(false)
 
@@ -28,15 +29,15 @@ const SingleMovieLayout = () => {
   }, [id])
 
   useEffect(() => {
-    setIsFavourite(favouritesMoviesIds.includes(id))
+    setIsFavourite(favouriteIds.includes(id))
     //eslint-disable-next-line
-  }, [favouritesMoviesIds])
+  }, [favouriteIds])
 
   const onStar = () => {
     if(!isFavourite) {
-      dispatch(makeMovieFavourite(id))
+      dispatch(makeFavourite(id))
     } else {
-      dispatch(removeFromFavourites(id))
+      dispatch(removeFavourite(id))
     }
   }
 
@@ -51,6 +52,7 @@ const SingleMovieLayout = () => {
 
 const View = ({data, onStar, isFavourite}) => {
   const {title, poster, year, actors, country, genre, imdbRating, imdbVotes, plot, writer} = data;
+  const starOptions = { color: '#F5C518', fontSize: '30px' };
   return (
     <>
       <Link to="/" className="single-movie__back">&#60; Back to all</Link>
@@ -66,17 +68,17 @@ const View = ({data, onStar, isFavourite}) => {
         <img src={poster} alt={title} className="single-movie__img"/>
         <div className="single-movie__info">
           <h1 className="single-movie__name">{title}</h1>
-          <p className="single-movie__descr">{plot}</p>
-          <p className="single-movie__descr"><strong>IMDb RATING:</strong> {imdbRating}/10 ({imdbVotes})</p>
-          <p className="single-movie__descr"><strong>Year:</strong> {year}</p>
-          <p className="single-movie__descr"><strong>Actors:</strong> {actors}</p>
-          <p className="single-movie__descr"><strong>Country:</strong> {country}</p>
-          <p className="single-movie__descr"><strong>Genre:</strong> {genre}</p>
-          <p className="single-movie__descr"><strong>Writer:</strong> {writer}</p>
+          <p className="single-movie__text">{plot}</p>
+          <p className="single-movie__text"><span>IMDb RATING:</span> {imdbRating}/10 ({imdbVotes})</p>
+          <p className="single-movie__text"><span>Year:</span> {year}</p>
+          <p className="single-movie__text"><span>Actors:</span> {actors}</p>
+          <p className="single-movie__text"><span>Country:</span> {country}</p>
+          <p className="single-movie__text"><span>Genre:</span> {genre}</p>
+          <p className="single-movie__text"><span>Writer:</span> {writer}</p>
         </div>
         <div className='single-movie__actions'>
           <button className='single-movie__actions-star' onClick={onStar}>
-            {isFavourite ? <StarIcon sx={{ color: '#F5C518', fontSize: '50px' }}/> : <StarBorderIcon sx={{ color: '#F5C518', fontSize: '50px' }}/>}
+            {isFavourite ? <StarIcon sx={starOptions}/> : <StarBorderIcon sx={starOptions}/>}
           </button>
         </div>
       </div>

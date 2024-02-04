@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-import { fetchMovies, setActiveCard } from '../../store/moviesSlice';
+import { fetchMovieList, setActiveCard } from '../../store/movieSlice';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MovieSkeleton from '../movieSkeleton/MovieSkeleton';
 
@@ -12,13 +12,13 @@ import StarIcon from '@mui/icons-material/Star';
 import './movieList.scss';
 
 const MovieList = (props) => {
-    const moviesList = useSelector(state => state.movies.movies)
-    const moviesTotal = useSelector(state => state.movies.total)
-    const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
-    const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
-    const page = useSelector(state => state.movies.page);
-    const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
-    const activeMovieCard = useSelector(state => state.movies.activeMovieCard)
+    const movieList = useSelector(state => state.movie.movieList)
+    const movieTotal = useSelector(state => state.movie.total)
+    const movieListLoadingStatus = useSelector(state => state.movie.movieListLoadingStatus);
+    const activeSearchValue = useSelector(state => state.movie.activeSearchValue);
+    const page = useSelector(state => state.movie.page);
+    const activeMovieCard = useSelector(state => state.movie.activeMovieCard)
+    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
 
     const dispatch = useDispatch();
     
@@ -29,10 +29,10 @@ const MovieList = (props) => {
 
     const onRequest = () => {
         const query = {
-            title: activeQueryValue,
+            title: activeSearchValue,
             page: page + 1,
         }
-        dispatch(fetchMovies(query))
+        dispatch(fetchMovieList(query))
     }
     
 
@@ -57,7 +57,7 @@ const MovieList = (props) => {
     const renderItems = (list) => {
         const items = list.map((item,i) => {
             const starOptions = { color: '#F5C518', fontSize: '30px' };
-            const isFavourite = favouritesMoviesIds.includes(item.id) 
+            const isFavourite = favouriteIds.includes(item.id) 
 
             return (
                 <Transition 
@@ -109,9 +109,9 @@ const MovieList = (props) => {
         )
     }
 
-    const renderButton = (loadingStatus, moviesList, moviesTotal) => {
+    const renderButton = (loadingStatus, movieList, movieTotal) => {
         const isDisabled = loadingStatus === "loading"
-        const style = {'display' : moviesList.length === moviesTotal ? 'none' : 'block'}
+        const style = {'display' : movieList.length === movieTotal ? 'none' : 'block'}
 
         return (
             <button 
@@ -125,12 +125,12 @@ const MovieList = (props) => {
         )
     }
 
-    const items = renderItems(moviesList)
-    const button = renderButton(moviesLoadingStatus, moviesList, moviesTotal)
+    const items = renderItems(movieList)
+    const button = renderButton(movieListLoadingStatus, movieList, movieTotal)
 
     return (
         <div className="movie__list">
-            {moviesLoadingStatus === "error" ? <ErrorMessage/> : items}
+            {movieListLoadingStatus === "error" ? <ErrorMessage/> : items}
             {button}
         </div>
     )

@@ -6,14 +6,14 @@ import MovieSearchForm from "../movieSearchForm/movieSearchForm";
 import { useSelector } from 'react-redux';
 
 const MainPage = () => {
-    const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
+    const favouriteIds = useSelector(state => state.favourite.favouriteIds)
 
     const [selectedMovie, setMovie] = useState(null);
     const [isFavourite, setIsFavourite] = useState(false);
 
     const onMovieSelected = (movie) => {
         setMovie(movie);
-        if(movie) setIsFavourite(favouritesMoviesIds.includes(movie.id))
+        if(movie) setIsFavourite(favouriteIds.includes(movie.id))
     }
 
     return (
