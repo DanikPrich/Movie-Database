@@ -10,9 +10,11 @@ const useMovieService = () => {
   const { request } = useHttp();
 
   const _apiBase = 'http://omdbapi.com/';
-  // const _apiKey = 'apikey=655cdc5c';
-  const _apiKey = 'apikey=9dcbec5b';
-  const proxy = 'http://cors-anywhere.herokuapp.com/'
+  const _apiKey = 'apikey=655cdc5c';
+
+  /* Use this if you have a CORS problems */
+  // const proxy = 'http://cors-anywhere.herokuapp.com/' 
+  const proxy = ''
 
   const getMoviesByTitle = async ({title, page = 1}: IQueryMovieList) => {
     const data = await request(`${proxy}${_apiBase}?${_apiKey}&s=${title}&page=${page}`, 'GET');
