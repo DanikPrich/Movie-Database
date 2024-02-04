@@ -8,6 +8,7 @@ const initialState = {
   movieLoadingStatus: 'idle',
   favouritesLoadingStatus: 'idle',
   activeQueryValue: '',
+  activeMovieCard: null,
   favouritesIds: JSON.parse(localStorage.getItem('favourites')) || [],
   favouritesList: [],
   total: null,
@@ -58,7 +59,10 @@ const moviesSlice  = createSlice({
     removeFromFavourites: (state, action) => {
       state.favouritesIds = state.favouritesIds.filter(id => id !== action.payload)
       localStorage.setItem('favourites', JSON.stringify(state.favouritesIds));
-    }
+    },
+    setActiveCard: (state, action) => {
+      state.activeMovieCard = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.pending, state => {state.moviesLoadingStatus = 'loading'}) 
@@ -94,5 +98,6 @@ const { actions, reducer } = moviesSlice
 export default reducer 
 export const {
   makeMovieFavourite,
-  removeFromFavourites
+  removeFromFavourites,
+  setActiveCard
 } = actions

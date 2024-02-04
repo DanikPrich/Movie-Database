@@ -1,7 +1,8 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
-import { fetchMovies } from '../../store/moviesSlice';
+import { fetchMovies, setActiveCard } from '../../store/moviesSlice';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MovieSkeleton from '../movieSkeleton/MovieSkeleton';
 
@@ -17,15 +18,27 @@ const MovieList = (props) => {
     const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
     const page = useSelector(state => state.movies.page);
     const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
+    const activeMovieCard = useSelector(state => state.movies.activeMovieCard)
 
     const dispatch = useDispatch();
     
+    useEffect(() => {
+        props.onMovieSelected(activeMovieCard);
+        //eslint-disable-next-line
+    }, []) 
+
     const onRequest = () => {
         const query = {
             title: activeQueryValue,
             page: page + 1,
         }
         dispatch(fetchMovies(query))
+    }
+    
+
+    const selectMovie = (movie) => {
+        dispatch(setActiveCard(movie))
+        props.onMovieSelected(movie);
     }
 
     const duration = 200;
@@ -43,8 +56,8 @@ const MovieList = (props) => {
 
     const renderItems = (list) => {
         const items = list.map((item,i) => {
-            const star = favouritesMoviesIds.includes(item.id) ? <StarIcon sx={{ color: '#F5C518', fontSize: '30px' }}/> : <StarBorderIcon sx={{ color: '#F5C518', fontSize: '30px' }}/>
-            const imgStyle = {'objectFit' : 'cover'}
+            const starOptions = { color: '#F5C518', fontSize: '30px' };
+            const isFavourite = favouritesMoviesIds.includes(item.id) 
 
             return (
                 <Transition 
@@ -59,17 +72,17 @@ const MovieList = (props) => {
                                 ...transitionStyles[state]
                             }}
                             onClick={() => {
-                                props.onMovieSelected({id: item.id, starComponent: star});
+                                selectMovie(item);
                             }}
                             onKeyDown={(e) => {
                                 if(e.key === "Enter" || e.key === 'e') {
-                                    props.onMovieSelected({id: item.id, starComponent: star}); 
+                                    selectMovie(item);
                                 }
                             }}
                             tabIndex={0}
                             >
-                                {star}
-                                <img src={item.poster} alt={item.title} style={imgStyle}/>
+                                {isFavourite ? <StarIcon sx={starOptions}/> : <StarBorderIcon sx={starOptions}/>}
+                                <img src={item.poster} alt={item.title} />
                                 <div className="movie__name">{item.title}</div>
                             </li>
                     )}}

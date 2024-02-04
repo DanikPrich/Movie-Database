@@ -7,6 +7,7 @@ import './movieSearchForm.scss';
 
 const MovieSearchForm = (props) => {
     const moviesLoadingStatus = useSelector(state => state.movies.moviesLoadingStatus);
+    const activeQueryValue = useSelector(state => state.movies.activeQueryValue);
 
     const dispatch = useDispatch();
     const updateMovie = async (searchValue) => {
@@ -17,12 +18,14 @@ const MovieSearchForm = (props) => {
         dispatch(fetchMovies(query))
     }
 
+    const validationSchema = Yup.object({
+        searchValue: Yup.string().required('This field is required'),
+    })
+
     return (
         <Formik 
-            initialValues={{searchValue: ''}}
-            validationSchema={Yup.object({
-                searchValue: Yup.string().required('This field is required'),
-            })}
+            initialValues={{searchValue: activeQueryValue}}
+            validationSchema={validationSchema}
             onSubmit={async ({searchValue}, {setSubmitting}) => {
                 await updateMovie(searchValue)
                 setSubmitting(false);

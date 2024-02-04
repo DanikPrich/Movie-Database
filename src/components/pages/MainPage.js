@@ -3,15 +3,17 @@ import { Helmet } from "react-helmet";
 import MovieList from "../movieList/MovieList";
 import MovieInfo from "../movieInfo/MovieInfo";
 import MovieSearchForm from "../movieSearchForm/movieSearchForm";
+import { useSelector } from 'react-redux';
 
 const MainPage = () => {
+    const favouritesMoviesIds = useSelector(state => state.movies.favouritesIds)
 
     const [selectedMovie, setMovie] = useState(null);
-    const [starComponent, setStarComponent] = useState(null);
+    const [isFavourite, setIsFavourite] = useState(false);
 
-    const onMovieSelected = ({id, starComponent}) => {
-        setMovie(id);
-        setStarComponent(starComponent);
+    const onMovieSelected = (movie) => {
+        setMovie(movie);
+        if(movie) setIsFavourite(favouritesMoviesIds.includes(movie.id))
     }
 
     return (
@@ -27,7 +29,7 @@ const MainPage = () => {
         <div className="movie__content">
             <MovieList onMovieSelected={onMovieSelected}/>
             <div style={{position: 'sticky', top: 25}}>
-                <MovieInfo movieId={selectedMovie} star={starComponent}/>
+                <MovieInfo movie={selectedMovie} star={isFavourite}/>
             </div>
         </div>
       </>

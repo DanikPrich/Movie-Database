@@ -1,41 +1,26 @@
-import { useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
 import Skeleton from '../skeleton/Skeleton';
 import { Link } from 'react-router-dom';
-
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 import './movieInfo.scss';
 
-const MovieInfo = (props) => {
-    
-    const [movie, setMovie] = useState(null);
-    const movies = useSelector(state => state.movies.movies);
-
-    useEffect(() => {
-        updateMovie();
-        //eslint-disable-next-line
-    }, [props.movieId])
-
-    const updateMovie = () => {
-        const {movieId} = props;
-        if(!movieId) return;
-        setMovie(movies.filter(movie => props.movieId === movie.id)[0])
-    }
-    
+const MovieInfo = ({movie, star}) => {
     return (
         <div className="movie__info">
-            {movie ? <View data={movie} star={props.star}/> : <Skeleton/>}
+            {movie ? <View data={movie} star={star}/> : <Skeleton/>}
         </div>
     )
 }
 
 const View = ({data, star}) => {
-    
+    const starOptions = { color: '#F5C518', fontSize: '30px' };
     const {title, year, poster, id} = data
+
     return (
         <div className="movie__basics">
             <div className='movie__info-img'>
                 <img src={poster} alt={title}  />
-                {star}
+                { star ? <StarIcon sx={starOptions}/> : <StarBorderIcon sx={starOptions}/> }
             </div>
             <div className="movie__info-wrapper">
                 <div>
