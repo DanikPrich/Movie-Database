@@ -1,4 +1,4 @@
-import { useHttp } from "../hooks/http.hook.ts";
+import { useHttp } from "../hooks/http.hook";
 import { IMovie, IMovieData } from "../types/movie";
 
 export interface IQueryMovieList {
@@ -11,7 +11,8 @@ const useMovieService = () => {
 
   const _apiBase = 'http://omdbapi.com/';
   const _apiKey = 'apikey=655cdc5c';
-  const proxy = 'http://cors-anywhere.herokuapp.com/' 
+  // const proxy = 'http://cors-anywhere.herokuapp.com/' 
+  const proxy = '' 
 
   const getMoviesByTitle = async ({title, page = 1}: IQueryMovieList) => {
     const data = await request(`${proxy}${_apiBase}?${_apiKey}&s=${title}&page=${page}`, 'GET');
