@@ -38,6 +38,10 @@
             top: 5px;
             z-index: 1;
         }
+        &:hover {
+            box-shadow: 0 5px 20px $main-color;
+            transform: translateY(-8px);
+        }
         &_selected {
             box-shadow: 0 5px 20px $main-color;
             transform: translateY(-8px);

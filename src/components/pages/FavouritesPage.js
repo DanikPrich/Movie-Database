@@ -24,12 +24,10 @@ const FavouritesPage = () => {
 
     const renderItems = (movieList) => {
         const items = movieList.map((item) => {
-            const imgStyle = {'objectFit' : 'cover'}
-
             return (
                 <Link to={`/movie/${item.id}`} key={item.id}>
                     <li className="favourite__item">
-                        <img src={item.poster} alt={item.title} style={imgStyle}/>
+                        <img src={item.poster} alt={item.title}/>
                         <div className="favourite__name">{item.title}</div>
                     </li>
                 </Link>

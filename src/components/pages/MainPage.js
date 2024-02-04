@@ -12,7 +12,6 @@ const MainPage = () => {
     const onMovieSelected = ({id, starComponent}) => {
         setMovie(id);
         setStarComponent(starComponent);
-        console.log(starComponent)
     }
 
     return (

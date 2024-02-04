@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
@@ -27,13 +26,6 @@ const MovieList = (props) => {
             page: page + 1,
         }
         dispatch(fetchMovies(query))
-    }
-    
-    const movieRefs = useRef([])
-    const focusOnItem = (i) => {
-        movieRefs.current.forEach(item => item.classList.remove('movie__item_selected'))
-        movieRefs.current[i].classList.add('movie__item_selected')
-        movieRefs.current[i].focus(); 
     }
 
     const duration = 200;
@@ -66,15 +58,12 @@ const MovieList = (props) => {
                                 ...defaultStyle,
                                 ...transitionStyles[state]
                             }}
-                            ref={el => movieRefs.current[i] = el}
                             onClick={() => {
                                 props.onMovieSelected({id: item.id, starComponent: star});
-                                focusOnItem(i)
                             }}
                             onKeyDown={(e) => {
                                 if(e.key === "Enter" || e.key === 'e') {
-                                    props.onMovieSelected(item.id); 
-                                    focusOnItem(i);
+                                    props.onMovieSelected({id: item.id, starComponent: star}); 
                                 }
                             }}
                             tabIndex={0}
