@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import Skeleton from '../skeleton/Skeleton.tsx';
+import SkeletonInfo from '../skeleton/SkeletonInfo.tsx';
 import { IMovie } from '../../types/movie';
 import './movieInfo.scss';
 
@@ -14,7 +14,7 @@ interface IMovieInfoProps {
 const MovieInfo = (props: IMovieInfoProps) => {
     return (
         <div className="movie__info">
-            { props.movie ? <View {...props} /> : <Skeleton/> }
+            { props.movie ? <View {...props} /> : <SkeletonInfo/> }
         </div>
     )
 }

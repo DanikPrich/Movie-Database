@@ -5,7 +5,7 @@ import { Transition, TransitionGroup } from 'react-transition-group';
 import { fetchMovieList, setActiveCard } from '../../store/movieSlice.ts';
 import { AppDispatch, RootState } from '../../store/index.ts';
 import ErrorMessage from '../errorMessage/ErrorMessage.tsx';
-import MovieSkeleton from '../movieSkeleton/MovieSkeleton.tsx';
+import MovieSkeleton from '../skeleton/MovieSkeleton.tsx';
 
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
