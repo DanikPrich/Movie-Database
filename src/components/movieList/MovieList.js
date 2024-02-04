@@ -109,18 +109,29 @@ const MovieList = (props) => {
         )
     }
 
+    const renderButton = (loadingStatus, moviesList, moviesTotal) => {
+        const isDisabled = loadingStatus === "loading"
+        const style = {'display' : moviesList.length === moviesTotal ? 'none' : 'block'}
+
+        return (
+            <button 
+                className="button button__main button__long"
+                disabled={isDisabled}
+                style={style}
+                onClick={() => onRequest()}
+            >
+                <div className="inner">load more</div>
+            </button>
+        )
+    }
+
     const items = renderItems(moviesList)
+    const button = renderButton(moviesLoadingStatus, moviesList, moviesTotal)
 
     return (
         <div className="movie__list">
             {moviesLoadingStatus === "error" ? <ErrorMessage/> : items}
-            <button 
-            className="button button__main button__long"
-            disabled={moviesLoadingStatus === "loading" || moviesList.length === moviesTotal}
-            style={{'display' : !moviesList.length ? 'none' : 'block'}}
-            onClick={() => onRequest()}>
-                <div className="inner">load more</div>
-            </button>
+            {button}
         </div>
     )
 }

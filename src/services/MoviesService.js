@@ -12,7 +12,7 @@ const useMovieService = () => {
     const data = await request(`${proxy}${_apiBase}?${_apiKey}&s=${title}&page=${page}`, 'GET');
     return {
       data: data.Search.map(_transformMovie), 
-      total: data.totalResults,
+      total: +data.totalResults,
       page
     };
   }

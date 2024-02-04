@@ -11,7 +11,7 @@ const initialState = {
   activeMovieCard: null,
   favouritesIds: JSON.parse(localStorage.getItem('favourites')) || [],
   favouritesList: [],
-  total: null,
+  total: 0,
   page: 0,
 }
 
