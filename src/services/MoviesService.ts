@@ -9,7 +9,7 @@ export interface IQueryMovieList {
 const useMovieService = () => {
   const { request } = useHttp();
 
-  const _apiBase = 'https://omdbapi.com/';
+  const _apiBase = 'https://www.omdbapi.com/';
   const _apiKey = 'apikey=655cdc5c';
 
   /* Turn on proxy for localhost */
