@@ -15,7 +15,7 @@ const App = () => {
             <div className="app">
                 <AppHeader/>
                 <main>
-                    <Suspense fallback={<Spinner />}>
+                    <Suspense fallback={<Spinner/>}>
                         <Routes>
                             <Route path="/" element={<MainPage/>}/>
                             <Route path="/movie/:id" element={<SingleMoviePage/>}/>
