@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Transition, TransitionGroup } from 'react-transition-group';
@@ -132,8 +132,8 @@ const MovieList = ({onMovieSelected}: IMovieListProps) => {
         )
     }
 
-    const items = renderItems(movieList)
-    const button = renderButton(movieListLoadingStatus, movieList, movieTotal)
+    const items = useMemo(() => renderItems(movieList), [movieList])
+    const button = useMemo(() => renderButton(movieListLoadingStatus, movieList, movieTotal), [movieListLoadingStatus, movieList, movieTotal])
 
     return (
         <div className="movie__list">

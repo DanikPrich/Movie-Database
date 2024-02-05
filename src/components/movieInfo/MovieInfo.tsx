@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -11,13 +11,17 @@ interface IMovieInfoProps {
     star: boolean
 }
 
-const MovieInfo = (props: IMovieInfoProps) => {
+function movieInfoPropsCompare(prevProps: IMovieInfoProps, nextProps: IMovieInfoProps) {
+    return prevProps.movie?.id === nextProps.movie?.id
+}
+
+const MovieInfo = memo((props: IMovieInfoProps) => {
     return (
         <div className="movie__info">
             { props.movie ? <View {...props} /> : <SkeletonInfo/> }
         </div>
     )
-}
+}, movieInfoPropsCompare)
 
 const View = ({movie, star}) => {
     const starOptions = { color: '#090907', fontSize: '30px' };
