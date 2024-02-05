@@ -24,7 +24,7 @@ const MovieInfo = memo((props: IMovieInfoProps) => {
 }, movieInfoPropsCompare)
 
 const View = ({movie, star}) => {
-    const starOptions = { color: '#090907', fontSize: '30px' };
+    const starOptions = { color: '#F5C518', fontSize: '30px' };
     const {title, year, poster, id} = movie
 
     return (
