@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/index.ts';
 import { fetchMovieList } from '../../store/movieSlice.ts';
-import { IQueryMovieList } from '../../services/MoviesService.ts';
+import { IQueryMovieList } from '../../api/movies.ts';
 import './movieSearchForm.scss';
 
 const MovieSearchForm = () => {

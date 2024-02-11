@@ -12,7 +12,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 import './movieList.scss';
 import { IMovie, IMovieList } from '../../types/movie.ts';
-import { IQueryMovieList } from '../../services/MoviesService.ts';
+import { IQueryMovieList } from '../../api/movies.ts';
 
 interface IMovieListProps {
     onMovieSelected: (value: IMovie | null) => void;

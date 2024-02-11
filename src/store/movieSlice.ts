@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import useMovieService from '../services/MoviesService.ts';
+import { apiMovies, IQueryMovieList } from '../api/movies.ts';
 import { IMovie, IMovieList } from "../types/movie";
-import { IQueryMovieList } from '../services/MoviesService.ts'
 
 interface IMovieState {
   movieList: IMovieList,
@@ -28,8 +27,7 @@ const initialState: IMovieState = {
 export const fetchMovieList = createAsyncThunk(
   'movie/fetchMovieList',
   async (query: IQueryMovieList) => {
-    const { getMoviesByTitle } = useMovieService();
-    const { data, total, page } = await getMoviesByTitle(query);
+    const { data, total, page } = await apiMovies.getMoviesByTitle(query);
 
     return {
       data,
@@ -43,8 +41,7 @@ export const fetchMovieList = createAsyncThunk(
 export const fetchMovie = createAsyncThunk(
   'movie/fetchMovie', 
   async (id: string) => { 
-    const { getMovieById } = useMovieService();
-    const data = await getMovieById(id);
+    const data = await apiMovies.getMovieById(id);
     return { data };
   }
 )

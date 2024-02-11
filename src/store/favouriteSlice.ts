@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import useMovieService from '../services/MoviesService.ts';
+import { apiMovies } from '../api/movies.ts';
 import { IMovieList } from "../types/movie";
 
 interface IFavouriteState {
@@ -17,8 +17,7 @@ const initialState: IFavouriteState = {
 export const fetchFavourites = createAsyncThunk(
   'favourite/fetchFavourites', 
   async (favouriteIds: Array<string>, thunkApi) => { 
-    const { getFavouritesByIds } = useMovieService();
-    const { data } = await getFavouritesByIds(favouriteIds);
+    const { data } = await apiMovies.getFavouritesByIds(favouriteIds);
     return { data };
   }
 )
