@@ -25,8 +25,3 @@ On this page, the user can view the list of their favorite movies and go to the 
 - Styled components and SASS for styling,
 - Lazy component rendering
 - Added demo proxy server to fix CORS errors
-
-## Important ‼️
-Before testing application on the localhost please enable proxy server: <br>
-On the page http://cors-anywhere.herokuapp.com/corsdemo <br>
-click "Request temporary access to the demo server" <br>
