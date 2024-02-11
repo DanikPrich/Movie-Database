@@ -5,8 +5,8 @@ import { IMovie, IMovieList } from "../types/movie";
 interface IMovieState {
   movieList: IMovieList,
   movie: IMovie | null,
-  movieListLoadingStatus: string,
-  movieLoadingStatus: string,
+  movieListLoadingStatus: 'idle' | 'loading' | 'error',
+  movieLoadingStatus: 'idle' | 'loading' | 'error',
   activeSearchValue: string,
   activeMovieCard: IMovie | null,
   total: number,
@@ -28,7 +28,6 @@ export const fetchMovieList = createAsyncThunk(
   'movie/fetchMovieList',
   async (query: IQueryMovieList) => {
     const { data, total, page } = await apiMovies.getMoviesByTitle(query);
-
     return {
       data,
       total,
@@ -42,6 +41,7 @@ export const fetchMovie = createAsyncThunk(
   'movie/fetchMovie', 
   async (id: string) => { 
     const data = await apiMovies.getMovieById(id);
+    console.log(data)
     return { data };
   }
 )

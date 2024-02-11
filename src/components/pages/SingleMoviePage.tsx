@@ -44,20 +44,26 @@ const SingleMovieLayout = () => {
     }
   }
 
-  if(movieLoadingStatus === 'loading') {
-    return <Spinner/>
-  } else if(movieLoadingStatus === 'error'){
-    return <ErrorMessage/>
+  const pageStatus = (loadingStatus: 'idle' | 'loading' | 'error') => {
+    if (loadingStatus === "loading") {
+      return <Spinner />;
+    } else if (loadingStatus === "error") {
+      return <ErrorMessage />;
+    }
   }
 
-  return movie ? <View data={movie} onStar={onStar} isFavourite={isFavourite} /> : null
+  return (
+    <div data-testid="single-movie-page">
+      {movie ? <View data={movie} onStar={onStar} isFavourite={isFavourite} /> : pageStatus(movieLoadingStatus)}
+    </div>
+  )
 }
 
 const View = ({data, onStar, isFavourite}) => {
   const {title, poster, year, actors, country, genre, imdbRating, imdbVotes, plot, writer} = data;
   const starOptions = { color: '#F5C518', fontSize: '30px' };
   return (
-    <div data-testid="single-movie-page">
+    <>
       <Link to="/" className="single-movie__back">&#60; Back to all</Link>
 
       <div className="single-movie">
@@ -85,7 +91,7 @@ const View = ({data, onStar, isFavourite}) => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

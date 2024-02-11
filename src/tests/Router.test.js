@@ -27,4 +27,12 @@ describe('TEST ROUTER',() => {
     fireEvent.click(favouritesLink)
     expect(await screen.findByTestId('favourites-page')).toBeInTheDocument()
   });
+
+  test('Single movie page routing', async () => {
+    render(renderTestApp({
+      route: '/movie/12',
+      initialState: {}
+    }))
+    expect(await screen.findByTestId('single-movie-page')).toBeInTheDocument()
+  });
 });
