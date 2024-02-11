@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useHttp } from "../hooks/http.hook";
 import { IMovie, IMovieData } from "../types/movie";
 
 export interface IQueryMovieList {
@@ -8,7 +7,7 @@ export interface IQueryMovieList {
 }
 
 const _apiBase = 'https://www.omdbapi.com/';
-const _apiKey = 'apikey=655cdc5c';
+const _apiKey = process.env.REACT_APP_API_KEY;
 
 const _transformMovie = (movie: IMovieData): IMovie => {
   return {
@@ -30,7 +29,7 @@ const _transformMovie = (movie: IMovieData): IMovie => {
 export const apiMovies = {
 
   async getMoviesByTitle({title, page = 1}: IQueryMovieList) {
-    const { data } = await axios.get(`${_apiBase}?${_apiKey}&s=${title}&page=${page}`);
+    const { data } = await axios.get(`${_apiBase}?apikey=${_apiKey}&s=${title}&page=${page}`);
     return {
       data: data.Search.map(_transformMovie), 
       total: +data.totalResults,
@@ -39,7 +38,7 @@ export const apiMovies = {
   },
 
   async getMovieById(id: string) {
-    const { data } = await axios.get(`${_apiBase}?${_apiKey}&i=${id}`);
+    const { data } = await axios.get(`${_apiBase}?apikey=${_apiKey}&i=${id}`);
     if(data?.Error) return Promise.reject(data.Error);
     else return _transformMovie(data);
   },
@@ -47,7 +46,7 @@ export const apiMovies = {
   async getFavouritesByIds(ids: Array<string>){
     try {
       const requests = ids.map(async (id) => {
-        const { data } = await axios.get(`${_apiBase}?${_apiKey}&i=${id}`);
+        const { data } = await axios.get(`${_apiBase}?apikey=${_apiKey}&i=${id}`);
         return _transformMovie(data);
       });
   

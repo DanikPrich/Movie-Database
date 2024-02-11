@@ -57,7 +57,7 @@ const View = ({data, onStar, isFavourite}) => {
   const {title, poster, year, actors, country, genre, imdbRating, imdbVotes, plot, writer} = data;
   const starOptions = { color: '#F5C518', fontSize: '30px' };
   return (
-    <>
+    <div data-testid="single-movie-page">
       <Link to="/" className="single-movie__back">&#60; Back to all</Link>
 
       <div className="single-movie">
@@ -85,7 +85,7 @@ const View = ({data, onStar, isFavourite}) => {
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

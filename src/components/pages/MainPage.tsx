@@ -19,7 +19,7 @@ const MainPage = () => {
     }
 
     return (
-      <>
+      <div data-testid="main-page">
         <Helmet>
             <meta
                 name="description"
@@ -34,7 +34,7 @@ const MainPage = () => {
                 <MovieInfo movie={selectedMovie} star={isFavourite}/>
             </div>
         </div>
-      </>
+      </div>
     )
 }
 

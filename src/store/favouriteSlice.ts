@@ -4,7 +4,7 @@ import { IMovieList } from "../types/movie";
 
 interface IFavouriteState {
   favouriteList: IMovieList,
-  favouriteLoadingStatus: string,
+  favouriteLoadingStatus: 'idle' | 'loading' | 'error',
   favouriteIds: Array<string>,
 }
 

@@ -48,13 +48,13 @@ const AppHeader = () => {
       <AppHeaderMenu>
         <ul>
           <li>
-            <NavLink end style={({ isActive }) => headerStyle(isActive)} to="/">
+            <NavLink data-testid="movies-link" end style={({ isActive }) => headerStyle(isActive)} to="/">
               Movies
             </NavLink>
           </li>
           /
           <li>
-            <NavLink style={({ isActive }) => headerStyle(isActive)} to="/favourites">
+            <NavLink data-testid="favourites-link" style={({ isActive }) => headerStyle(isActive)} to="/favourites">
               Favourites
             </NavLink>
           </li>
