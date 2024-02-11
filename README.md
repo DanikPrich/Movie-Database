@@ -1,4 +1,6 @@
 # Movie data base application
+Try it out: https://movie-database-inky-nine.vercel.app/
+
 Movie App is an application for searching movies, created with React. It consists of three pages: **Movie Search, Movie Detail and My Favorite Movies**.
 
 ## Movie Search
